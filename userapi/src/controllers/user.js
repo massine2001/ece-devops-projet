@@ -66,19 +66,25 @@ module.exports = {
   },
 
   update: (username, user, callback) => {
-    if (!username) {
-      return callback(new Error("Username must be provided"), null);
-    }
-    const userObj = {
-      username: username,
-      firstname: user.firstname,
-      lastname: user.lastname,
-    };
-    db.hmset(username, userObj, (err, res) => {
-      if (err) return callback(err, null);
-      callback(null, res);
+    db.exists(username, (err, exists) => {
+      if (err) {
+        return callback(err, null);
+      }
+      if (!exists) {
+        return callback(new Error("User does not exist"), null);
+      }
+      const userObj = {
+        username: username,
+        firstname: user.firstname,
+        lastname: user.lastname,
+      };
+      db.hmset(username, userObj, (err, res) => {
+        if (err) return callback(err, null);
+        callback(null, res);
+      });
     });
   },
+  
   
   userExists: (username, callback) => {
     if (!username) {
@@ -88,7 +94,9 @@ module.exports = {
       if (err) return callback(err, null);
       callback(null, res === 1);
     });
-  },
+  }
+}
+  /*
 
   // Fonction pour incrémenter un compteur associé à un utilisateur
   incrementCounter: (username, counterName, callback) => {
@@ -125,3 +133,4 @@ module.exports = {
 
 
 }
+*/

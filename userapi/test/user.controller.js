@@ -5,7 +5,6 @@ const db = require('../src/dbClient')
 describe('User', () => {
   
   beforeEach(() => {
-    // Clean DB before each test
     db.flushdb()
   })
   
@@ -13,9 +12,9 @@ describe('User', () => {
 
     it('create a new user', (done) => {
       const user = {
-        username: 'sergkudinov',
-        firstname: 'Sergei',
-        lastname: 'Kudinov'
+        username: 'piratehunter',
+        firstname: 'zoro',
+        lastname: 'roronoa'
       }
       userController.create(user, (err, result) => {
         expect(err).to.be.equal(null)
@@ -26,8 +25,8 @@ describe('User', () => {
 
     it('passing wrong user parameters', (done) => {
       const user = {
-        firstname: 'Sergei',
-        lastname: 'Kudinov'
+        firstname: 'nami',
+        lastname: 'roronoa'
       }
       userController.create(user, (err, result) => {
         expect(err).to.not.be.equal(null)
@@ -38,9 +37,9 @@ describe('User', () => {
 
     it('avoid creating an existing user', (done)=> {
       const user = {
-        username: 'sergkudinov',
-        firstname: 'Sergei',
-        lastname: 'Kudinov'
+        username: 'piratehunter',
+        firstname: 'zoro',
+        lastname: 'roronoa'
       }
       // Create a user
       userController.create(user, () => {
@@ -58,9 +57,9 @@ describe('User', () => {
 
     it('get a user by username', (done) => {
       const user = {
-        username: 'sergkudinov',
-        firstname: 'Sergei',
-        lastname: 'Kudinov'
+        username: 'piratehunter',
+        firstname: 'zoro',
+        lastname: 'roronoa'
       }
       // Create a user
       userController.create(user, () => {
@@ -68,8 +67,9 @@ describe('User', () => {
         userController.get(user.username, (err, result) => {
           expect(err).to.be.equal(null)
           expect(result).to.be.deep.equal({
-            firstname: 'Sergei',
-            lastname: 'Kudinov'
+            username: 'piratehunter',
+            firstname: 'zoro',
+            lastname: 'roronoa'
           })
           done()
         })
@@ -83,6 +83,77 @@ describe('User', () => {
         done()
       })
     })
-  
+    
+    it('should get all users', (done) => {
+      userController.getAllUsers((err, users) => {
+        expect(err).to.be.null;
+        expect(users).to.be.an('array');
+        done();
+      });
+    });
+
   })
+
+  describe('deleteUser', () => {
+    it('should delete a user', (done) => {
+      const username = 'testuser';
+      db.hmset(username, {
+        username: 'testuser',
+        firstname: 'John',
+        lastname: 'Doe'
+      }, () => {
+        userController.deleteUser(username, (err, result) => {
+          expect(err).to.be.null;
+          expect(result).to.equal('User deleted successfully');
+          done();
+        });
+      });
+    });
+
+    it('should handle non-existent user deletion', (done) => {
+      const username = 'nonexistentuser';
+      userController.deleteUser(username, (err, result) => {
+        expect(err).to.not.be.null;
+        expect(result).to.be.null;
+        done();
+      });
+    });
+  });
+
+  describe('update', () => {
+    it('should update a user', (done) => {
+      const username = 'testuser';
+      const user = {
+        username: 'testuser',
+        firstname: 'John',
+        lastname: 'Doe'
+      };
+      db.hmset(username, user, () => {
+        const updatedUser = {
+          username: 'testuser',
+          firstname: 'Jane',
+          lastname: 'Doe'
+        };
+        userController.update(username, updatedUser, (err, result) => {
+          expect(err).to.be.null;
+          expect(result).to.equal('OK');
+          done();
+        });
+      });
+    });
+
+    it('should handle non-existent user update', (done) => {
+      const username = 'nonexistentuser';
+      const user = {
+        username: 'nonexistentuser',
+        firstname: 'John',
+        lastname: 'Doe'
+      };
+      userController.update(username, user, (err, result) => {
+        expect(err).to.not.be.equal(null);
+        expect(result).to.be.null;
+        done();
+      });
+    });
+  });
 })

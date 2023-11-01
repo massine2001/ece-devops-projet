@@ -18,6 +18,23 @@ describe('User REST API', () => {
     db.quit()
   })
 
+  
+  describe('GET /', () => {
+    it('should return the homepage', (done) => {
+      chai.request(app)
+        .get('/')
+        .then((res) => {
+          chai.expect(res).to.have.status(200);
+          chai.expect(res).to.be.html;
+          done();
+        })
+        .catch((err) => {
+          throw err;
+        });
+    });
+  });
+
+
   describe('POST /user', () => {
 
     it('create a new user', (done) => {
@@ -27,38 +44,34 @@ describe('User REST API', () => {
         lastname: 'Kudinov'
       }
       chai.request(app)
-        .post('/user')
+        .post('/user/add')
         .send(user)
         .then((res) => {
-          chai.expect(res).to.have.status(201)
-          chai.expect(res.body.status).to.equal('success')
-          chai.expect(res).to.be.json
-          done()
+          chai.expect(res).to.redirect;
+          done();
         })
         .catch((err) => {
-           throw err
-        })
-    })
-    
+          throw err;
+        });
+    });
+  
     it('pass wrong parameters', (done) => {
       const user = {
         firstname: 'Sergei',
         lastname: 'Kudinov'
       }
       chai.request(app)
-        .post('/user')
+        .post('/user/add')
         .send(user)
         .then((res) => {
-          chai.expect(res).to.have.status(400)
-          chai.expect(res.body.status).to.equal('error')
-          chai.expect(res).to.be.json
-          done()
+          chai.expect(res).to.redirect;
+          done();
         })
         .catch((err) => {
-           throw err
-        })
-    })
-  })
+          throw err;
+        });
+    });
+  });
 
   describe('GET /user', () => {
     
@@ -98,5 +111,102 @@ describe('User REST API', () => {
            throw err
         })
     })
+
+    it('should return the list of users', (done) => {
+      chai.request(app)
+        .get('/user')
+        .then((res) => {
+          chai.expect(res).to.have.status(200);
+          chai.expect(res).to.be.html;
+          done();
+        })
+        .catch((err) => {
+          throw err;
+        });
+    });
   })
+
+  describe('GET /user/add', () => {
+    it('should return the add user form', (done) => {
+      chai.request(app)
+        .get('/user/add')
+        .then((res) => {
+          chai.expect(res).to.have.status(200);
+          chai.expect(res).to.be.html;
+          done();
+        })
+        .catch((err) => {
+          throw err;
+        });
+    });
+  });
+
+
+  describe('GET /user/delete', () => {
+    it('should return the delete user form', (done) => {
+      chai.request(app)
+        .get('/user/delete')
+        .then((res) => {
+          chai.expect(res).to.have.status(200);
+          chai.expect(res).to.be.html;
+          done();
+        })
+        .catch((err) => {
+          throw err;
+        });
+    });
+  });
+
+  describe('GET /user/update', () => {
+    it('should return the update user form', (done) => {
+      chai.request(app)
+        .get('/user/update')
+        .then((res) => {
+          chai.expect(res).to.have.status(200);
+          chai.expect(res).to.be.html;
+          done();
+        })
+        .catch((err) => {
+          throw err;
+        });
+    });
+  });
+
+  describe('GET /user/:username', () => {
+    it('should get an existing user', (done) => {
+      const user = {
+        username: 'sergkudinov',
+        firstname: 'Sergei',
+        lastname: 'Kudinov'
+      };
+      // Create a user
+      userController.create(user, () => {
+        chai.request(app)
+          .get(`/user/${user.username}`)
+          .then((res) => {
+            chai.expect(res).to.have.status(200);
+            chai.expect(res.body.status).to.equal('success');
+            chai.expect(res).to.be.json;
+            done();
+          })
+          .catch((err) => {
+            throw err;
+          });
+      });
+    });
+
+    it('should not get a user when it does not exist', (done) => {
+      chai.request(app)
+        .get('/user/invalid')
+        .then((res) => {
+          chai.expect(res).to.have.status(400);
+          chai.expect(res.body.status).to.equal('error');
+          chai.expect(res).to.be.json;
+          done();
+        })
+        .catch((err) => {
+          throw err;
+        });
+    });
+  });
 })

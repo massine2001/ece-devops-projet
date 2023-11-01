@@ -19,6 +19,10 @@ app.use('/add',userRouter);
 
 app.use('/user', userRouter);
 
+app.get('/health', (req, res) => {
+  res.send('Application is up and running');
+});
+
 const server = app.listen(port, (err) => {
   if (err) throw err
   console.log("Server listening the port " + port)

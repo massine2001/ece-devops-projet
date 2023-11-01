@@ -99,8 +99,8 @@ describe('User', () => {
       const username = 'testuser';
       db.hmset(username, {
         username: 'testuser',
-        firstname: 'John',
-        lastname: 'Doe'
+        firstname: 'zoro',
+        lastname: 'roronoa'
       }, () => {
         userController.deleteUser(username, (err, result) => {
           expect(err).to.be.null;
@@ -125,14 +125,14 @@ describe('User', () => {
       const username = 'testuser';
       const user = {
         username: 'testuser',
-        firstname: 'John',
-        lastname: 'Doe'
+        firstname: 'zoro',
+        lastname: 'roronoa'
       };
       db.hmset(username, user, () => {
         const updatedUser = {
           username: 'testuser',
           firstname: 'Jane',
-          lastname: 'Doe'
+          lastname: 'roronoa'
         };
         userController.update(username, updatedUser, (err, result) => {
           expect(err).to.be.null;
@@ -146,8 +146,8 @@ describe('User', () => {
       const username = 'nonexistentuser';
       const user = {
         username: 'nonexistentuser',
-        firstname: 'John',
-        lastname: 'Doe'
+        firstname: 'zoro',
+        lastname: 'roronoa'
       };
       userController.update(username, user, (err, result) => {
         expect(err).to.not.be.equal(null);

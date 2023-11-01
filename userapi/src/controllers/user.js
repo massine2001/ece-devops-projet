@@ -1,30 +1,28 @@
 const db = require('../dbClient')
 
 module.exports = {
+
   create: (user, callback) => {
-    // Check parameters
     if(!user.username)
       return callback(new Error("Wrong user parameters"), null)
-    // Create User schema
     const userObj = {
       username: user.username,
       firstname: user.firstname,
       lastname: user.lastname,
     }
-    // Check if user already exists
     db.hgetall(user.username, function(err, res) {
       if (err) return callback(err, null)
       if (!res) {
-        // Save to DB
         db.hmset(user.username, userObj, (err, res) => {
           if (err) return callback(err, null)
-          callback(null, res) // Return callback
+          callback(null, res) 
         })
       } else {
         callback(new Error("User already exists"), null)
       }
     })
   },
+
   get: (username, callback) => {
     if(!username)
       return callback(new Error("Username must be provided"), null)
@@ -36,6 +34,7 @@ module.exports = {
         callback(new Error("User doesn't exists"), null)
     })
   },
+
   getAllUsers: (callback) => {
     db.keys('*', (err, keys) => {
         if (err) return callback(err, null);
@@ -51,6 +50,7 @@ module.exports = {
         });
     });
   },
+
   deleteUser: (username, callback) => {
     if (!username) {
       return callback(new Error("Username must be provided"), null);
@@ -64,6 +64,7 @@ module.exports = {
       }
     });
   },
+
   update: (username, user, callback) => {
     if (!username) {
       return callback(new Error("Username must be provided"), null);
@@ -78,6 +79,7 @@ module.exports = {
       callback(null, res);
     });
   },
+  
   userExists: (username, callback) => {
     if (!username) {
       return callback(new Error("Username must be provided"), null);

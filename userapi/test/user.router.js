@@ -39,9 +39,9 @@ describe('User REST API', () => {
 
     it('create a new user', (done) => {
       const user = {
-        username: 'sergkudinov',
-        firstname: 'Sergei',
-        lastname: 'Kudinov'
+        username: 'piratehunter',
+        firstname: 'zoro',
+        lastname: 'roronoa'
       }
       chai.request(app)
         .post('/user/add')
@@ -57,8 +57,8 @@ describe('User REST API', () => {
   
     it('pass wrong parameters', (done) => {
       const user = {
-        firstname: 'Sergei',
-        lastname: 'Kudinov'
+        firstname: 'zoro',
+        lastname: 'roronoa'
       }
       chai.request(app)
         .post('/user/add')
@@ -77,9 +77,9 @@ describe('User REST API', () => {
     
     it('get an existing user', (done) => {
       const user = {
-        username: 'sergkudinov',
-        firstname: 'Sergei',
-        lastname: 'Kudinov'
+        username: 'piratehunter',
+        firstname: 'zoro',
+        lastname: 'roronoa'
       }
       // Create a user
       userController.create(user, () => {
@@ -175,9 +175,9 @@ describe('User REST API', () => {
   describe('GET /user/:username', () => {
     it('should get an existing user', (done) => {
       const user = {
-        username: 'sergkudinov',
-        firstname: 'Sergei',
-        lastname: 'Kudinov'
+        username: 'piratehunter',
+        firstname: 'zoro',
+        lastname: 'roronoa'
       };
       // Create a user
       userController.create(user, () => {

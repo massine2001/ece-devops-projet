@@ -7,6 +7,7 @@ module.exports = {
       return callback(new Error("Wrong user parameters"), null)
     // Create User schema
     const userObj = {
+      username: user.username,
       firstname: user.firstname,
       lastname: user.lastname,
     }
@@ -68,6 +69,7 @@ module.exports = {
       return callback(new Error("Username must be provided"), null);
     }
     const userObj = {
+      username: username,
       firstname: user.firstname,
       lastname: user.lastname,
     };

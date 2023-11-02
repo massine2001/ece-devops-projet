@@ -8,7 +8,8 @@
     "test": "mocha",
     "dev": "nodemon src/index.js",
     "build:css": "postcss src/styles.css -o public/styles.css",
-    "watch:css": "postcss src/styles.css -o public/styles.css --watch"
+    "watch:css": "postcss src/styles.css -o public/styles.css --watch",
+    "build": "npm run build:css"
   },
   "author": "AGHARMIOU Massine, FODERE Vincent",
   "license": "",

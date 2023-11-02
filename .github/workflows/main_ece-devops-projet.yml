@@ -17,15 +17,15 @@ jobs:
         working-directory: userapi
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
-          node-version: '14'
+          node-version: '18.x'
 
-      - name: npm install, build, and test
-        run: |
+      - name: npm install
+        run:
           npm install
 
       - name: Zip artifact for deployment

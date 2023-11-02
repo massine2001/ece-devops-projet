@@ -1,0 +1,11 @@
+---
+- hosts: userapi_server
+  # Run commands as root
+  become: true
+  # Roles to be executed on these hosts
+  roles:
+  - role: userapi/install
+    tags: install
+
+  - role: userapi/healthchecks
+    tags: check

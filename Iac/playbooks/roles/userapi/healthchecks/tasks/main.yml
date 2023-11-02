@@ -1,0 +1,35 @@
+#health
+- name: Check UserAPI health
+  uri:
+    url: http://127.0.0.1/-/health
+    return_content: yes
+  # Register the output of the module in a variable
+  register: userapi_health
+
+- name: Print UserAPI health
+  debug:
+    msg: "{{ userapi_health.content }}"
+
+#readiness
+- name: Check UserAPI readiness
+  uri:
+    url: http://127.0.0.1/-/readiness
+    return_content: yes
+    
+  register: userapi_readiness
+
+- name: Print UserAPI readiness
+  debug:
+    msg: "{{ userapi_readiness.content }}"
+ 
+#liveness
+- name: Check UserAPI Liveness
+  uri:
+    url: http://127.0.0.1/-/liveness
+    return_content: yes
+    
+  register: userapi_liveness
+
+- name: Print UserAPI liveness
+  debug:
+    msg: "{{ userapi_liveness.content }}"

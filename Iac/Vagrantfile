@@ -1,0 +1,28 @@
+Vagrant.configure("2") do |config|
+
+
+  config.vm.define "userapi_server" do |server|
+    server.vm.box = "centos/7"
+    config.vm.network "forwarded_port", guest: 3000, host: 1234
+    server.vm.provider "virtualbox" do |vb|
+      vb.name =  "userapi.server.local"
+      vb.memory = 2048
+      vb.cpus = 1
+    end
+    config.vbguest.auto_update = true
+    config.vbguest.installer_options = { allow_kernel_upgrade: true }
+
+  end
+  config.vm.provision "ansible_local" do |ansible|
+    ansible.playbook = "playbooks/run.yml"
+    ansible.tags = "install"
+    
+    app_directory = "/home/vagrant/userapi"
+    source_directory = "/home/vincent/Bureau/ece-devops-projet/userapi"
+    ansible.extra_vars = {
+      app_directory: app_directory,
+      source_directory: source_directory
+    }
+  end
+  config.vm.synced_folder "../userapi", "/home/vagrant/userapi"
+end

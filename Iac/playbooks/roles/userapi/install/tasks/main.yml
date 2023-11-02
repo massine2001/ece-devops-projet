@@ -1,0 +1,31 @@
+---
+ - name: Installer npm
+   yum:
+     name:
+       - npm
+     state: present
+
+ - name: Installer redis
+   yum:
+     name:
+       - redis
+     state: present
+
+ - name: Démarrer redis
+   command: sudo systemctl start redis
+
+ - name: npm install -> Installer les dépendances
+   command: npm install
+   args:
+     chdir: "{{ app_directory }}"
+     
+ - name: npm start -> Démarrer l'application web
+   command: npm start
+   args:
+     chdir: "{{ app_directory }}"
+   register: webapp_output
+
+ - name: Afficher l'URL du site
+   debug:
+     msg: "webapp sur -> http://localhost:1234"
+     

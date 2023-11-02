@@ -42,3 +42,9 @@ jobs:
     - name: Run tests
       run: npm test
 
+    - name: Deploy to Heroku
+      uses: akhileshns/heroku-deploy@v3.12.12
+      with:
+        heroku_email: "agharmioumassine@gmail.com"
+        heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+        heroku_app_name: "HEROKU_APP_NAME"

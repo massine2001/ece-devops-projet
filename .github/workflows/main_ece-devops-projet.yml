@@ -19,13 +19,13 @@ jobs:
       - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
-          node-version: '14.x'
+          node-version: '18.x'
 
       - name: npm install
         run: npm install
 
       - name: Zip artifact for deployment
-        run: zip -r release.zip ./*
+        run: zip release.zip ./*
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3

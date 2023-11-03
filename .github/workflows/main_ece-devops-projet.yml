@@ -26,9 +26,12 @@ jobs:
           node-version: '18.x'
 
       - name: npm install, build
-        run: |
+        run:
           npm install
-          npm run build --if-present
+      
+      - name: npm install, build
+        run:
+            npm run build --if-present
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r

@@ -27,8 +27,9 @@ jobs:
       - name: Zip artifact for deployment
         run: zip -r release.zip ./*
 
-      - name: List files in the directory
-        run: ls -R
+      - name: Verify the existence of the artifact
+        run: ls release.zip
+
     
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3

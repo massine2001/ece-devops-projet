@@ -22,18 +22,16 @@ jobs:
           node-version: '18.x'
 
       - name: npm install
-        run:
-          npm install
+        run: npm install
 
       - name: Zip artifact for deployment
-        run: zip -r /zip/release.zip ./*
-        
+        run: zip -r release.zip ./*
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: node-app
-          path: /zip/release.zip
+          path: release.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -53,6 +51,5 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'ece-devops-projet'
-          slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_76AAD4DF94B54CBB8C2E31D460761321 }}
           package: .

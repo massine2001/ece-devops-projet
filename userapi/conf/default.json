@@ -1,6 +1,7 @@
 {
   "redis": {
-    "host": "127.0.0.1",
-    "port": 6379
+    "host": "ece-devops-projet.redis.cache.windows.net",
+    "port": 6379,
+    "password": "mslEyUxY5x9pj9HPL6wRzjglqFhr2KyGNAzCaFYNpw8="
   }
 }

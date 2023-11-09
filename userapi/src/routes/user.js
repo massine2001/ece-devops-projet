@@ -1,5 +1,4 @@
 const express = require('express')
-const path = require('path');
 const userController = require('../controllers/user')
 
   const userRouter = express.Router()
@@ -132,7 +131,7 @@ const userController = require('../controllers/user')
     
     
   userRouter.post('/user/add', (req, res) => {
-      userController.create(req.body, (err, result) => {
+      userController.create(req.body, (err) => {
         if (err) {
           return res.redirect('/user/add?error=true');
         }
@@ -204,7 +203,7 @@ const userController = require('../controllers/user')
 
   userRouter.post('/user/delete/:username', (req, res) => {
       const username = req.params.username;
-      userController.deleteUser(username, (err, result) => {
+      userController.deleteUser(username, (err) => {
           if (err) {
               return res.redirect(`/user?error=${encodeURIComponent(err.message)}`);
           }
@@ -287,7 +286,7 @@ const userController = require('../controllers/user')
       lastname: req.body.lastname,
       firstname : req.body.firstname
     }
-    userController.update(username, objU, (err, result) => {
+    userController.update(username, objU, (err) => {
         if (err) {
             return res.redirect(`/user/update/${username}?error=${encodeURIComponent(err.message)}`);
         }
@@ -297,7 +296,7 @@ const userController = require('../controllers/user')
     
 
 
-  userRouter.get('/user/:username', (req, resp, next) => {
+  userRouter.get('/user/:username', (req, resp) => {
     const username = req.params.username
 
     userController.get(username, (err, res) => {

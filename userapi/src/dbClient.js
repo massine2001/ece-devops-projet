@@ -11,7 +11,21 @@ var db = redis.createClient({
   }
 })
 
+
+const sendPing = async () => {
+  try {
+      const pingResult = await db.ping();
+      console.log(`PING réussi. Réponse : ${pingResult}`);
+  } catch (error) {
+      console.error(`Erreur lors de l'envoi de PING : ${error.message}`);
+  }
+};
+
+
+const pingInterval = setInterval(sendPing, 3 * 60 * 1000);
+
 process.on('SIGINT', function() {
+  clearInterval(pingInterval);
   db.quit();
 });
 

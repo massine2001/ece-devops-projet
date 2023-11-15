@@ -1,8 +1,5 @@
 const { expect } = require('chai');
-const dbClient = require('../src/dbClient');
-
-const db = dbClient.db;
-const sendPing = dbClient.sendPing;
+const db = require('../src/dbClient');
 
 describe('Redis', () => {
   before((done) => {
@@ -24,7 +21,8 @@ describe('Redis', () => {
     const originalPing = db.ping;
     db.ping = () => Promise.resolve('PONG');
 
-    await expect(sendPing()).to.eventually.equal('PONG');
+   
+    await expect(db.sendPing()).to.eventually.equal('PONG');
 
     db.ping = originalPing;
   });
@@ -35,7 +33,7 @@ describe('Redis', () => {
 
     await new Promise(resolve => setTimeout(resolve, 3 * 1000));
 
-    await expect(sendPing()).to.eventually.equal('PONG');
+    await expect(db.sendPing()).to.eventually.equal('PONG');
 
     db.ping = originalPing;
   });

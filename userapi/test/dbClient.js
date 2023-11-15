@@ -1,10 +1,11 @@
 const { expect } = require('chai');
+const dbClient = require('../src/dbClient');
 
-let db;
+const db = dbClient.db;
+const sendPing = dbClient.sendPing;
 
 describe('Redis', () => {
   before((done) => {
-    db = require('../src/dbClient').db;
     db.on('connect', () => {
       console.log('Connected to Redis');
       done();
@@ -21,24 +22,20 @@ describe('Redis', () => {
 
   it('should send PING to Redis', async () => {
     const originalPing = db.ping;
-    db.ping = (callback) => {
-      callback(null, 'PONG');
-    };
+    db.ping = () => Promise.resolve('PONG');
 
-    await expect(db.sendPing()).to.eventually.equal('PONG');
+    await expect(sendPing()).to.eventually.equal('PONG');
 
     db.ping = originalPing;
   });
 
   it('should send PING at regular intervals', async () => {
     const originalPing = db.ping;
-    db.ping = (callback) => {
-      callback(null, 'PONG');
-    };
+    db.ping = () => Promise.resolve('PONG');
 
-    await new Promise((resolve) => setTimeout(resolve, 3 * 1000));
+    await new Promise(resolve => setTimeout(resolve, 3 * 1000));
 
-    await expect(db.sendPing()).to.eventually.equal('PONG');
+    await expect(sendPing()).to.eventually.equal('PONG');
 
     db.ping = originalPing;
   });

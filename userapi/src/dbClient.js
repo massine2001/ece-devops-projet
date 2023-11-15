@@ -39,4 +39,4 @@ process.on('SIGINT', function () {
   process.exit();
 });
 
-module.exports = { db, sendPing };
+module.exports = db;

@@ -24,9 +24,10 @@ const sendPing = async () => {
 
 const pingInterval = setInterval(sendPing, 3 * 60 * 1000);
 
-process.on('SIGINT', function() {
-  clearInterval(pingInterval);
-  db.quit();
+//puisque le redis cache se ferme après un intervalle de 10 minutes au lieu d'utiliser db.quit() on laisse simplement l'intervalle s'écouler
+process.on('SIGINT', function () {
+    clearInterval(pingInterval); 
+    process.exit(); 
 });
 
 module.exports = db

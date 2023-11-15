@@ -7,27 +7,28 @@ var db = redis.createClient({
   port: process.env.REDIS_PORT || config.redis.port,
   password: process.env.REDIS_PASSWORD || config.redis.password,
   retry_strategy: () => {
-    return new Error("Retry time exhausted")
+    return new Error("Retry time exhausted");
   }
-})
-
+});
 
 const sendPing = async () => {
   try {
-      const pingResult = await db.ping();
-      console.log(`PING réussi. Réponse : ${pingResult}`);
+    const pingResult = await db.ping();
+    console.log(`PING réussi. Réponse : ${pingResult}`);
+    return pingResult;
   } catch (error) {
-      console.error(`Erreur lors de l'envoi de PING : ${error.message}`);
+    console.error(`Erreur lors de l'envoi de PING : ${error.message}`);
+    throw error;
   }
 };
 
-
 const pingInterval = setInterval(sendPing, 3 * 60 * 1000);
 
-//puisque le redis cache se ferme après un intervalle de 10 minutes au lieu d'utiliser db.quit() on laisse simplement l'intervalle s'écouler
+// Puisque le cache Redis se ferme après un intervalle de 10 minutes,
+// au lieu d'utiliser db.quit(), on laisse simplement l'intervalle s'écouler.
 process.on('SIGINT', function () {
-    clearInterval(pingInterval); 
-    process.exit(); 
+  clearInterval(pingInterval);
+  process.exit();
 });
 
-module.exports = db
+module.exports = { db, sendPing };

@@ -1,5 +1,6 @@
-const redis = require("redis");
+var redis = require("redis");
 const configure = require('./configure');
+const pingService = require('./pingService');
 
 const config = configure();
 const db = redis.createClient({
@@ -8,35 +9,18 @@ const db = redis.createClient({
   password: process.env.REDIS_PASSWORD || config.redis.password,
   retry_strategy: () => {
     return new Error("Retry time exhausted");
-  },
+  }
 });
 
-const sendPing = async () => {
-  try {
-    const pingResult = await new Promise((resolve, reject) => {
-      db.ping((error, result) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(result);
-        }
-      });
-    });
-    console.log(`PING réussi. Réponse : ${pingResult}`);
-    return pingResult;
-  } catch (error) {
-    console.error(`Erreur lors de l'envoi de PING : ${error.message}`);
-    throw error;
-  }
-};
-
-const pingInterval = setInterval(sendPing, 3 * 60 * 1000);
-
-// Puisque le cache Redis se ferme après un intervalle de 10 minutes,
-// au lieu d'utiliser db.quit(), on laisse simplement l'intervalle s'écouler.
-process.on('SIGINT', function () {
+const pingInterval = setInterval(() => pingService(db), 3 * 60 * 1000);
+setTimeout(() => {
   clearInterval(pingInterval);
-  process.exit();
+  console.log('Ping interval cleared after 3 hours');
+}, 5 * 1000);
+
+// Gérer l'arrêt de l'application
+process.on('SIGINT', function() {
+  db.quit();
 });
 
 module.exports = db;

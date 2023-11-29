@@ -1,8 +1,11 @@
 const { expect } = require('chai');
-const db = require('../src/dbClient');
+const pingService = require('../src/pingService');
+
+let db;
 
 describe('Redis', () => {
   before((done) => {
+    db = require('../src/dbClient');
     db.on('connect', () => {
       console.log('Connected to Redis');
       done();
@@ -19,10 +22,11 @@ describe('Redis', () => {
 
   it('should send PING to Redis', async () => {
     const originalPing = db.ping;
-    db.ping = () => Promise.resolve('PONG');
+    db.ping = () => Promise.resolve('PONG'); 
 
-   
-    await expect(db.sendPing()).to.eventually.equal('PONG');
+    const result = await pingService(db);
+
+    expect(result).to.equal('PONG');
 
     db.ping = originalPing;
   });
@@ -33,7 +37,9 @@ describe('Redis', () => {
 
     await new Promise(resolve => setTimeout(resolve, 3 * 1000));
 
-    await expect(db.sendPing()).to.eventually.equal('PONG');
+    const result = await pingService(db);
+
+    expect(result).to.equal('PONG');
 
     db.ping = originalPing;
   });

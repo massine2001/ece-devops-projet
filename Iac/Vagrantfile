@@ -18,7 +18,7 @@ Vagrant.configure("2") do |config|
     ansible.tags = "install"
     
     app_directory = "/home/vagrant/userapi"
-    source_directory = "/home/vincent/Bureau/ece-devops-projet/userapi"
+    source_directory = "../userapi"
     ansible.extra_vars = {
       app_directory: app_directory,
       source_directory: source_directory

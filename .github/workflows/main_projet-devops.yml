@@ -59,6 +59,6 @@ jobs:
         with:
           app-name: 'projet-devops'
           slot-name: 'Production'
-          package: ./userapi
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B3CED2969A9942D791B5C705F9ED1A12 }}
+          package: .
           

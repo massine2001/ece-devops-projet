@@ -33,6 +33,10 @@ Pour cette partie, on a utilisé node js comme langage de programmations et MySq
 
 ### Construire une image Docker de notre application
 
+- Prérequis : avoir docker
+- Pour avoir l'image Docker entrer la commande :
+```docker pull tarmyos/devops-projet``` 
+
 ## Partie 05
 
 ### Orchestration des containers avec Docker Compose

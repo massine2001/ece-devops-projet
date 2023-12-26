@@ -4,7 +4,7 @@
   "description": "User API web application",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/index.js",
+    "start": "NODE_ENV=production node app.js",
     "test": "mocha",
     "dev": "nodemon src/index.js",
     "build:css": "postcss src/styles.css -o public/styles.css",

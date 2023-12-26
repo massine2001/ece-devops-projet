@@ -11,15 +11,11 @@ const db = redis.createClient({
     return new Error("Retry time exhausted");
   }
 });
-/*
-const pingInterval = setInterval(() => pingService(db), 3 * 60 * 1000);
-setTimeout(() => {
-  clearInterval(pingInterval);
-  console.log('Ping interval cleared after 3 hours');
-}, 5 * 1000);*/
 
-// Gérer l'arrêt de l'application
+const pingInterval = setInterval(() => pingService(db), 3 * 60 * 1000); // Ping toutes les 10 minutes
+
 process.on('SIGINT', function() {
+  clearInterval(pingInterval);
   db.quit();
 });
 

@@ -1,13 +1,14 @@
-const ping = async (db) => {
-    try {
-      const pingResult = await db.ping();
-      console.log(`PING réussi. Réponse : ${pingResult}`);
-      return pingResult;
-    } catch (error) {
-      console.error(`Erreur lors de l'envoi de PING : ${error.message}`);
-      throw error;
-    }
-  };
-  
-  module.exports = ping;
-  
+const ping = (db) => {
+  return new Promise((resolve, reject) => {
+    db.ping((err, response) => {
+      if (err) {
+        console.error(`Erreur lors de l'envoi de PING : ${err.message}`);
+        reject(err);
+      } else {
+        resolve(response);
+      }
+    });
+  });
+};
+
+module.exports = ping;

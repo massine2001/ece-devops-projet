@@ -12,7 +12,7 @@ const db = redis.createClient({
   }
 });
 
-const pingInterval = setInterval(() => pingService(db), 3 * 60 * 1000); // Ping toutes les 10 minutes
+const pingInterval = setInterval(() => pingService(db), 3 * 60 * 1000); // Ping toutes les 3 minutes
 
 process.on('SIGINT', function() {
   clearInterval(pingInterval);

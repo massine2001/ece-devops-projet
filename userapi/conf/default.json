@@ -1,7 +1,7 @@
 {
   "redis": {
-    "host": "redis-ece.redis.cache.windows.net",
+    "host": "ece-redis.redis.cache.windows.net",
     "port": 6379,
-    "password": "70RQTfs271089tlLzcCDtRe0t2frOCj2KAzCaLFhWfk="
+    "password": "Ob7qivm658U8Xv7XLmModOlP5TNiEWHBCAzCaH4zmJ0="
   }
 }
